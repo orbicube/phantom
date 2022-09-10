@@ -43,7 +43,7 @@ class LastFM(commands.Cog):
 
         # Check for error message
         try:
-            await interaction.response.send_message(
+            await ctx.reply(
                 tracks_json["message"], ephemeral=True)
             return
         except:
@@ -53,7 +53,7 @@ class LastFM(commands.Cog):
         try:
             track = tracks_json["recenttracks"]["track"][0]
         except:
-            await interaction.reponse.send_message(
+            await ctx.reply(
                 "{username} hasn't scrobbled anything yet.",
                 ephemeral=True)
             return
@@ -100,7 +100,7 @@ class LastFM(commands.Cog):
         if track["album"]["#text"]:
             embed.set_footer(text=track["album"]["#text"])
 
-        await interaction.response.send_message(embed=embed)
+        await ctx.reply(embed=embed)
 
         async with aiosqlite.connect("ext/data/lastfm.db") as db:
             await db.execute("REPLACE INTO lastfm VALUES (?, ?)",
