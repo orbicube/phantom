@@ -16,7 +16,7 @@ class Weather(commands.Cog):
         "User-Agent": "WillyWeatherKit/2.9.11",
     }
 
-    async def get_weather(self, ctx, postcode: Optional[str]):
+    async def get_weather(self, interaction, postcode: Optional[str]):
 
         if not postcode:
             async with aiosqlite.connect("ext/data/weather.db") as db:
@@ -55,11 +55,13 @@ class Weather(commands.Cog):
         return loc_name, loc_url
 
     @app_commands.describe(postcode="AU postcode, will be saved for subsequent uses")
-    @app_commands.command()
+    @commands.hybrid_command()
     async def wz(self, ctx, postcode: Optional[str]):
         """ Get current weather for a given Australian postcode """
 
         loc_name, loc_url = await self.get_weather(ctx, postcode)
+        if not loc_name:
+            return
 
         params = {
             "observational": "true",

@@ -13,7 +13,7 @@ class LastFM(commands.Cog):
         self.bot = bot
 
     @app_commands.describe(username="last.fm username, will be saved for subsequent uses")
-    @app_commands.command()
+    @commands.hybrid_command()
     async def np(self, ctx, username: Optional[str]):
         """ Post currently playing track info from last.fm """
 
@@ -43,7 +43,8 @@ class LastFM(commands.Cog):
 
         # Check for error message
         try:
-            await ctx.reply(tracks_json["message"], ephemeral=True)
+            await interaction.response.send_message(
+                tracks_json["message"], ephemeral=True)
             return
         except:
             pass
@@ -52,8 +53,10 @@ class LastFM(commands.Cog):
         try:
             track = tracks_json["recenttracks"]["track"][0]
         except:
-            await ctx.reply("{username} hasn't scrobbled anything yet.",
+            await interaction.reponse.send_message(
+                "{username} hasn't scrobbled anything yet.",
                 ephemeral=True)
+            return
 
         # Check if they're currently listening to a track
         try:
@@ -97,7 +100,7 @@ class LastFM(commands.Cog):
         if track["album"]["#text"]:
             embed.set_footer(text=track["album"]["#text"])
 
-        await ctx.reply(embed=embed)
+        await interaction.response.send_message(embed=embed)
 
         async with aiosqlite.connect("ext/data/lastfm.db") as db:
             await db.execute("REPLACE INTO lastfm VALUES (?, ?)",
