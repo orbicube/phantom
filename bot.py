@@ -9,15 +9,22 @@ import sys
 
 import httpx
 
-from credentials import DISCORD_TOKEN, DEBUG_CHANNEL
-
-intents = discord.Intents.default()
+from credentials import DISCORD_TOKEN, ERROR_CHANNEL
 
 discord.utils.setup_logging()
 
+intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
+
+allowed_mentions = discord.AllowedMentions(
+    everyone=False,
+    replied_user=False)
+
 bot = commands.Bot(
     command_prefix=commands.when_mentioned_or(),
-    intents=intents)
+    intents=intents,
+    allowed_mentions=allowed_mentions)
 
 async def main():
     async with bot:
@@ -45,7 +52,7 @@ async def on_app_command_error(interaction: discord.Interaction,
     error_msg += "```"
 
     if not isinstance(error, commands.CommandOnCooldown):
-        await bot.get_channel(DEBUG_CHANNEL).send(error_msg)
+        await bot.get_channel(ERROR_CHANNEL).send(error_msg)
         traceback.print_exception(
             type(error), error, error.__traceback__, file=sys.stderr)
 
@@ -67,7 +74,7 @@ async def on_command_error(ctx, error):
     error_msg += "```"
 
     if not isinstance(error, commands.CommandOnCooldown):
-        await bot.get_channel(DEBUG_CHANNEL).send(error_msg)
+        await bot.get_channel(ERROR_CHANNEL).send(error_msg)
         traceback.print_exception(
             type(error), error, error.__traceback__, file=sys.stderr)
 
