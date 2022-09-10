@@ -28,7 +28,7 @@ bot = commands.Bot(
 
 async def main():
     async with bot:
-        bot.http_client = httpx.AsyncClient(http2=True)
+        bot.http_client = httpx.AsyncClient()
 
         for file in Path("ext").glob("**/[!_]*.py"):
             ext = ".".join(file.parts).removesuffix(".py")
