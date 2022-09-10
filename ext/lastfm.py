@@ -18,7 +18,7 @@ class LastFM(commands.Cog):
         """ Post currently playing track info from last.fm """
 
         if not username:
-            async with aiosqlite.connect("ext/data/lfm.db") as db:
+            async with aiosqlite.connect("ext/data/lastfm.db") as db:
                 async with db.execute("""SELECT lfm_user FROM lastfm
                     WHERE disc_user=?""", (ctx.message.author.id,)) as cursor:
                     username = await cursor.fetchone()
@@ -99,14 +99,14 @@ class LastFM(commands.Cog):
 
         await ctx.reply(embed=embed)
 
-        async with aiosqlite.connect("ext/data/lfm.db") as db:
+        async with aiosqlite.connect("ext/data/lastfm.db") as db:
             await db.execute("REPLACE INTO lastfm VALUES (?, ?)",
                 (ctx.message.author.id, username))
             await db.commit()
 
 
 async def setup(bot):
-    async with aiosqlite.connect("ext/data/lfm.db") as db:
+    async with aiosqlite.connect("ext/data/lastfm.db") as db:
         await db.execute("""CREATE TABLE IF NOT EXISTS lastfm
             (disc_user integer, lfm_user text, UNIQUE(disc_user))""")
         await db.commit()
