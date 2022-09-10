@@ -12,15 +12,12 @@ import httpx
 from credentials import DISCORD_TOKEN, DEBUG_CHANNEL
 
 intents = discord.Intents.default()
-intents.message_content = True
-intents.members = True
 
 discord.utils.setup_logging()
 
 bot = commands.Bot(
     command_prefix=commands.when_mentioned_or(),
     intents=intents)
-
 
 async def main():
     async with bot:

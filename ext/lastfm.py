@@ -13,7 +13,7 @@ class LastFM(commands.Cog):
         self.bot = bot
 
     @app_commands.describe(username="last.fm username, will be saved for subsequent uses")
-    @commands.hybrid_command()
+    @app_commands.command()
     async def np(self, ctx, username: Optional[str]):
         """ Post currently playing track info from last.fm """
 

@@ -55,7 +55,7 @@ class Weather(commands.Cog):
         return loc_name, loc_url
 
     @app_commands.describe(postcode="AU postcode, will be saved for subsequent uses")
-    @commands.hybrid_command()
+    @app_commands.command()
     async def wz(self, ctx, postcode: Optional[str]):
         """ Get current weather for a given Australian postcode """
 
