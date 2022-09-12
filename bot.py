@@ -52,7 +52,7 @@ async def on_app_command_error(interaction: discord.Interaction,
     error_msg += "```"
 
     if not isinstance(error, commands.CommandOnCooldown):
-        await bot.get_channel(ERROR_CHANNEL).send(error_msg)
+        await self.bot.get_channel(ERROR_CHANNEL).send(error_msg)
         traceback.print_exception(
             type(error), error, error.__traceback__, file=sys.stderr)
 
@@ -74,7 +74,7 @@ async def on_command_error(ctx, error):
     error_msg += "```"
 
     if not isinstance(error, commands.CommandOnCooldown):
-        await bot.get_channel(ERROR_CHANNEL).send(error_msg)
+        await self.bot.get_channel(ERROR_CHANNEL).send(error_msg)
         traceback.print_exception(
             type(error), error, error.__traceback__, file=sys.stderr)
 
