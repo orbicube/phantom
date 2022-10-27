@@ -16,7 +16,7 @@ class Weather(commands.Cog):
         "User-Agent": "WillyWeatherKit/2.9.11",
     }
 
-    async def get_weather(self, interaction, postcode: Optional[str]):
+    async def get_weather(self, ctx, postcode: Optional[str]):
 
         if not postcode:
             async with aiosqlite.connect("ext/data/weather.db") as db:
